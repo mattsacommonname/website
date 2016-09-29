@@ -20,7 +20,7 @@ import os
 from flask import Flask
 from flask import redirect
 from flask import render_template
-from flask import url_for
+from flask import request
 
 application = Flask (__name__)
 
@@ -36,10 +36,10 @@ def index ():
 
 @application.errorhandler (404)
 def error_not_found (e):
-    """Log the error, redirect the user to landing. TODO: Make a 404 page."""
-    logging.error ('404 error.')
-    landing_url = url_for ('index')
-    return redirect (landing_url)
+    """Log the error, display a 404 page."""
+    logging.error ('404: "%s"', request.url)
+    output = render_template ('404.html')
+    return output, 404
 
 @application.errorhandler (418)
 def im_a_teapot (e):
