@@ -16,6 +16,7 @@
 
 import logging
 import os
+import traceback
 
 from flask import Flask
 from flask import redirect
@@ -47,7 +48,9 @@ def im_a_teapot (e):
     return "I'm a teapot.", 418
 
 @application.errorhandler (500)
-def internal_server_error (e):
+def error_server_internal (e):
     """Log the error and stacktrace, inform the user."""
-    logging.exception ('500 error.')
-    return 'Whoops, something went wrong on our end...', 500
+    exc = traceback.format_exc ()
+    logging.exception ('500: "%s"\n%s', request.url, exc)
+    output = render_template ('500.html')
+    return output, 500
