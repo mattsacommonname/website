@@ -18,6 +18,7 @@ import logging
 import os
 import traceback
 
+from flask import abort
 from flask import Flask
 from flask import redirect
 from flask import render_template
@@ -28,6 +29,11 @@ application = Flask (__name__)
 DEBUG = os.environ ['SERVER_SOFTWARE'].startswith ('Development')
 
 application.config.from_object (__name__)
+
+@application.route ('/brew')
+def brew ():
+    """Stub for RFC 2324 functionality."""
+    abort (418)
 
 @application.route ('/')
 def index ():
@@ -43,9 +49,10 @@ def error_not_found (e):
     return output, 404
 
 @application.errorhandler (418)
-def im_a_teapot (e):
-    """TODO: Implement brewing protocol."""
-    return "I'm a teapot.", 418
+def error_im_a_teapot (e):
+    """Deal with coffee brewing requests (this is a teapot)."""
+    output = render_template ('418.html')
+    return output, 418
 
 @application.errorhandler (500)
 def error_server_internal (e):
