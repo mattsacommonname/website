@@ -2,8 +2,8 @@
 
 What it says on the tin.
 
-## Installation
+## Run local test server
 
-To install dependancies:
+In the repo's base directory:
 
-    pip install -t lib -r requirements.txt
+    python3 -m http.server
